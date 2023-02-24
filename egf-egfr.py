@@ -13,8 +13,8 @@ pdb_list.retrieve_pdb_file('4HJO')
 
 # Load the PDB files for EGF and EGFR
 parser = PDBParser()
-egf_structure = parser.get_structure('EGF', 'pdb1egf.ent')
-egfr_structure = parser.get_structure('EGFR', 'pdb4hjo.ent')
+egf_structure = parser.get_structure('EGF', 'eg/1egf.cif')
+egfr_structure = parser.get_structure('EGFR', 'hj/4hjo.cif')
 
 # Load the UniProt sequence for EGFR
 handle = open('P00533.fasta')
