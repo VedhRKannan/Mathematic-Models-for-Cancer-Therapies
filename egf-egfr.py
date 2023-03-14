@@ -1,70 +1,37 @@
-import os
-import urllib.request
-from Bio.PDB.MMCIFParser import MMCIFParser
-from Bio.SeqUtils import seq1
-from Bio import SeqIO
-import nglview
+# # Import required libraries
+# from rdkit.Chem.Draw import IPythonConsole
+# from rdkit.Chem.Pharm3D.Pharmacophore import *
+# from rdkit.Chem import Draw
+# from rdkit import Chem
+# from rdkit.Chem import AllChem
+# from rdkit.Chem.Pharm3D import Pharmacophore
+# from rdkit.Chem.Pharm3D.EmbedLib import Embed
+import rdkit.Chem.Pharm3D.EmbedLib
+
+help(rdkit.Chem.Pharm3D.EmbedLib)
 
 
-# Load the CIF file for EGF and EGFR
-egf_structure = MMCIFParser().get_structure('EGF', 'eg/1egf.cif')
-egfr_structure = MMCIFParser().get_structure('EGFR', 'hj/4hjo.cif')
+# Load the ligand and receptor structures
+ligand = Chem.MolFromPDBFile('EGF.pdb')
+receptor = Chem.MolFromPDBFile('EGFR.pdb')
 
+# Generate the 3D conformations of the ligand and receptor
+ligand_conf = AllChem.EmbedMolecule(ligand)
+receptor_conf = AllChem.EmbedMolecule(receptor)
 
-# Download the CIF file for EGF and EGFR
-urllib.request.urlretrieve(
-    "https://files.rcsb.org/download/1EGF.cif", "1EGF.cif")
-urllib.request.urlretrieve(
-    "https://files.rcsb.org/download/4HJO.cif", "4HJO.cif")
+# Generate the pharmacophore features for the ligand and receptor
+ligand_feats = Pharm3D.EmbedLib.GeneratePharm3DFeatures(ligand, 'Ligand')
+receptor_feats = Pharm3D.EmbedLib.GeneratePharm3DFeatures(receptor, 'Receptor')
 
+# Generate the signature factory for the ligand and receptor
+sf = SigFactory(ligand_feats, receptor_feats)
 
-# Load the UniProt sequence for EGFR
-fasta_file = os.path.expanduser('P00533.fasta')
-handle = open(fasta_file)
-seq_record = SeqIO.read(handle, 'fasta')
-handle.close()
+# Generate the pharmacophore model for the EGF-EGFR interaction
+pharm = Pharmacophore.FromSigFactory(sf)
 
-# Extract the sequence of the kinase domain of EGFR (residues 711-980)
-kinase_domain = seq_record.seq[710:979]
+# Embed the ligand and receptor with the pharmacophore model
+EmbedMoleculeWithPharm3D(ligand_conf, receptor_conf, pharm)
 
-# Find the chain that contains the kinase domain of EGFR in the CIF structure
-kinase_domain_chain = None
-for chain in egfr_structure.get_chains():
-    for residue in chain.get_residues():
-        if residue.get_resname() == 'TPO':
-            if chain.id in residue.get_full_id():
-                kinase_domain_chain = chain
-                break
-    if kinase_domain_chain is not None:
-        break
-
-# Print the sequence of the kinase domain in the CIF file
-if kinase_domain_chain is not None:
-    cif_seq = ''
-    for residue in kinase_domain_chain.get_residues():
-        if residue.get_resname() == 'TPO':
-            cif_seq += 'T'
-        else:
-            cif_seq += seq1(residue.get_resname())
-    print(cif_seq)
-else:
-    print('Kinase domain chain not found in CIF file')
-
-# Visualize EGF-EGFR complex with nglview
-view = nglview.show_structure_file('4HJO.cif')
-view.add_component('1EGF.cif')
-view.add_representation('cartoon', selection='protein')
-view.add_representation('spacefill', selection='EGF', opacity=0.5)
-view.add_representation('surface', selection='EGF',
-                        opacity=0.3, color='yellow')
-view.add_representation(
-    'spacefill', selection='chain A and resnum 708-980', opacity=0.5)
-view.add_representation(
-    'line', selection='chain A and resnum 708-980', color='green')
-view.add_representation(
-    'surface', selection='chain A and resnum 708-980', opacity=0.3, color='purple')
-view.center()
-view.camera = 'perspective'
-view.background = 'white'
-view.update_representation()
-view
+# Visualize the embedded ligand and receptor
+view = Draw.MolToMPL(receptor_conf)
+view.show()
