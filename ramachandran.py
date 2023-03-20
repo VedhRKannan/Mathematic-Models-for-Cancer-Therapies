@@ -1,18 +1,33 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 
-# Load data from TSV file
-data = pd.read_csv('1nql_biopython.tsv', delimiter='\t',
-                   header=None, names=['AA', 'Phi', 'Psi', 'Type'])
+# read the TSV file
+filename = "new.tsv"
+with open(filename, 'r') as f:
+    lines = f.readlines()
 
-# Create Ramachandran plot using Matplotlib
-plt.scatter(data['Phi'], data['Psi'], s=10, c='black')
-plt.xlabel('Phi')
-plt.ylabel('Psi')
-plt.title('Ramachandran Plot for Protein 1NQL')
+# extract phi and psi angles
+phi_list = []
+psi_list = []
+for line in lines:
+    cols = line.strip().split('\t')
+    phi_list.append(float(cols[1]))
+    psi_list.append(float(cols[2]))
+
+# plot the Ramachandran plot
+
+
+# Set up plot
+plt.figure(figsize=(8, 8))
 plt.xlim(-180, 180)
 plt.ylim(-180, 180)
 plt.xticks([-180, -120, -60, 0, 60, 120, 180])
 plt.yticks([-180, -120, -60, 0, 60, 120, 180])
-plt.grid(True)
+plt.xlabel("Phi")
+plt.ylabel("Psi")
+plt.grid()
+
+# Plot data
+plt.scatter(phi_list, psi_list, s=10, c="black")
+
+# Show plot
 plt.show()
