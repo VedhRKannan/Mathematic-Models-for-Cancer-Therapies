@@ -1,59 +1,58 @@
-from scipy.integrate import solve_ivp
-import numpy as np
+
+############################# Classic Example #####################################################
+
+from scipy.optimize import minimize
+from lmfit import Model, Parameters
+import pylab
 import matplotlib.pyplot as plt
+import numpy as np
 
-# Define the Michaelis-Menten equation
+# Michaelis-Menten constants (M), maximum rate(M.s-1)
+Km, Vmax = 0.0033, 20
 
-
-def michaelis_menten(x, vmax, km):
-    return (vmax * x) / (km + x)
-
-# Define a function to calculate the effective enzyme concentration based on pH and temperature
-
-
-def effective_enzyme_concentration(enzyme_concentration, ph, temperature, denaturation_constant):
-    effective_concentration = enzyme_concentration * \
-        10**((ph - 7.0) * denaturation_constant)
-    effective_concentration *= np.exp(-denaturation_constant *
-                                      (temperature - 37.0))
-    return effective_concentration
-
-# Define the reaction function
+# Grid of substrate concentration values (M)
+E = np.linspace
+S = np.linspace(0, 0.0111, 1000)
 
 
-def reaction(t, y, vmax, km, enzyme_concentration, ph, temperature, denaturation_constant):
-    substrate_concentration = y[0]
-    enzyme_effective_concentration = effective_enzyme_concentration(
-        enzyme_concentration, ph, temperature, denaturation_constant)
-    velocity = michaelis_menten(
-        substrate_concentration, vmax, km) * enzyme_effective_concentration
-    dydt = -velocity, velocity
-    return dydt
+def rate(S, Km, Vmax):
+    return Vmax * S / (Km + S)
+
+# use matplot lib to plot the product on the x axis and the rate of reaction on the y axis
+
+# plt.plot(S, rate(S, Km, Vmax))
+# plt.x_label('Substrate')
+
+# pylab.plot(S, rate(S, Km, Vmax))
+# pylab.show()
 
 
-# Define the initial conditions
-y0 = [1.0, 0.0]
+############################## Fitting a Model ###############################
+def v(s, v_max, k_m):
+    return (v_max * s) / (k_m + s)
 
-# Define the parameters
-vmax = 10.0
-km = 0.1
-enzyme_concentration = 10
-ph = 8.6
-temperature = 37.0
-denaturation_constant = 0.01
 
-# Define the time span and step size
-t_span = [0.0, 10.0]
-t_eval = np.linspace(t_span[0], t_span[1], 1000)
+data = np.array([[3.6, 1.8, 0.9, 0.45, 0.225, 0.1125, 3.6, 1.8, 0.9, 0.45, 0.225, 0.1125, 3.6, 1.8, 0.9, 0.45, 0.225, 0.1125, 0],
+                 [0.004407692, 0.004192308, 0.003553846, 0.002576923, 0.001661538, 0.001064286, 0.004835714, 0.004671429, 0.0039, 0.002857143, 0.00175, 0.001057143, 0.004907143, 0.004521429, 0.00375, 0.002764286, 0.001857143, 0.001121429, 0]]).T
 
-# Solve the differential equation
-solution = solve_ivp(reaction, t_span, y0, args=(
-    vmax, km, enzyme_concentration, ph, temperature, denaturation_constant), t_eval=t_eval)
+v_real = data[:, 1]
+s_real = data[:, 0]
 
-# Plot the results
-plt.plot(solution.t, solution.y[0], label='substrate')
-plt.plot(solution.t, solution.y[1], label='product')
-plt.xlabel('Time')
-plt.ylabel('Concentration')
-plt.legend()
+
+def loss(theta):
+    v_max, k_m = theta
+    v_pred = v(s_real, v_max, k_m)
+    return np.sum((v_real - v_pred)**2)
+
+
+res = minimize(loss, [1, 1])
+print(res.x)
+
+plt.scatter(s_real, v_real)
+s_plot = np.linspace(0, 4, 100)
+plt.plot(s_plot, v(s_plot, res.x[0], res.x[1]))
+plt.xlim([0, 4])
+plt.ylim([0, 0.006])
+plt.xlabel('[S]')
+plt.ylabel('v')
 plt.show()
