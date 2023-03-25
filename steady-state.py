@@ -33,6 +33,7 @@ plt.plot(S, dES_dt, label='d[ES]/dt = 0')
 
 plt.xlabel('[S]')
 plt.ylabel('[ES]')
+plt.axvline(x=Km, linestyle='--', color='gray', label="Km")
 plt.title('Michaelis-Menten curve with d[ES]/dt = 0')
 plt.legend()
 plt.show()
