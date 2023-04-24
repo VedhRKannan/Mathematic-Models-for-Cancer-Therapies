@@ -2,27 +2,38 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-
-def hill_equation(x, bmax, kd, n):
-    return bmax * (x ** n) / ((kd ** n) + (x ** n))
+# Define the hill model function
 
 
-egf_conc = np.array([0.1, 0.3, 1, 3, 10])   # EGF concentrations in nM
-# measured binding values in fmol/mg protein
-binding = np.array([2.1, 5.8, 16.3, 46.7, 88.6])
+def hill_model(x, A, n, Kd):
+    return A * (x ** n) / (Kd ** n + x ** n)
 
-max_binding = np.max(binding)   # maximum binding capacity
-binding_norm = binding / max_binding   # normalize to maximum binding
-binding_norm = binding_norm * 1000   # convert to fmol/μg protein
 
-p0 = [100, 1e-9, 2]   # initial guesses for the parameters
-popt, pcov = curve_fit(hill_equation, egf_conc, binding_norm, p0)
-bmax_fit, kd_fit, n_fit = popt
+# Define the experimental data
+EGF_concentration = np.array([0,])  # EGF concentration in nM
+# Fluorescence intensity in arbitrary units
+fluorescence_intensity = np.array([0,])
 
-plt.plot(egf_conc, binding_norm, 'ro', label='Experimental Data')
-plt.plot(egf_conc, hill_equation(egf_conc, bmax_fit,
-         kd_fit, n_fit), 'b-', label='Hill Equation Fit')
+# Define initial guess for fitting parameters
+initial_guess = [100, 1, 1]
+
+# Fit the experimental data to the hill model
+popt, pcov = curve_fit(hill_model, EGF_concentration,
+                       fluorescence_intensity, p0=initial_guess)
+
+# Extract the fitting parameters and calculate the hill coefficient
+A_fit, n_fit, Kd_fit = popt
+n_hill = n_fit
+
+# Print the hill coefficient
+print("The hill coefficient (n) is:", n_hill)
+
+# Plot the experimental data and the fitted curve
+plt.plot(EGF_concentration, fluorescence_intensity,
+         'ro', label='Experimental data')
+plt.plot(EGF_concentration, hill_model(
+    EGF_concentration, A_fit, n_fit, Kd_fit), 'b-', label='Fit')
 plt.legend()
-plt.xlabel('EGF Concentration (nM)')
-plt.ylabel('Normalized Binding (fmol/μg protein)')
+plt.xlabel('EGF concentration (nM)')
+plt.ylabel('Fluorescence intensity (AU)')
 plt.show()

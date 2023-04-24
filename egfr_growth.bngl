@@ -1,0 +1,84 @@
+begin parameters
+  time_end  = 3600 # simulation end time (seconds)
+  time_step = 1    # simulation time step (seconds)
+  egf_init  = 1e-7 # initial EGF concentration (M)
+  egfr_init = 1e-8 # initial EGFR concentration (M)
+end parameters
+
+begin molecule types
+  molecule EGF {
+    site EGFbinding
+  }
+
+  molecule EGFR {
+    site EGFbinding
+  }
+
+  molecule EGFR_EGF {
+    site EGFbinding
+  }
+end molecule types
+
+
+begin seed species
+  EGFR(EGFbinding~)      @ 0
+  EGF                    @ 0
+  EGFR_EGF(EGFbinding:1) @ 0
+end seed species
+
+begin reaction rules
+  EGF + EGFR(EGFbinding~) <-> EGFR_EGF(EGFbinding:1) @ k1, k2
+  EGFR_EGF(EGFbinding:1) + EGFR(EGFbinding~)  <-> EGFR_EGF(EGFbinding:1).EGFR(EGFbinding~) @ k3, k4
+end reaction rules
+
+begin parameters
+  k1 = 1e6   # EGF-EGFR association rate constant (M^-1 s^-1)
+  k2 = 1e-2  # EGF-EGFR dissociation rate constant (s^-1)
+  k3 = 1e-5  # EGFR-EGFR association rate constant (M^-1 s^-1)
+  k4 = 1e-2  # EGFR-EGFR dissociation rate constant (s^-1)
+end parameters
+
+begin observables
+  EGF_free   : EGF 
+  EGFR_free  : EGFR(EGFbinding~)
+  EGFR_EGF_complex : EGFR_EGF
+  EGFR_dimer : EGFR(EGFbinding:1).EGFR(EGFbinding:2)
+end observables
+
+begin functions
+  egfr_total()   { EGFR_free + EGFR_EGF_complex + EGFR_dimer }
+  egf_consumed() { egf_init - EGF_free }
+end functions
+
+begin reaction rules
+  _t > 0: EGF => NULL @ egf_consumed() / time_end
+end reaction rules
+
+begin output
+  timecourse: (EGFR_free, EGFR_EGF_complex, EGFR_dimer, EGF_free)
+end output
+
+
+# begin parameters
+# Na 6.0e23
+# V 1e-12
+# kp1 3e6/(Na*V)
+# km1 1.0
+# end parameters
+
+# begin molecule types
+# A(b)
+# B(a)
+# end molecule types
+
+# begin seed species
+# A(b) 1000
+# B(a) 500
+# end seed species
+
+# begin reaction rules
+# A(b) + B(a) <-> A(b!1).B(a!1) kp1,km1
+# end reaction rules
+
+# generate_network({overwrite=>1});
+# simulate_ode({t_end=>20,n_steps=>20});
