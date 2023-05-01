@@ -35,8 +35,8 @@ substrate_range = np.linspace(0, max(substrate_concentration), 100)
 fitted_reaction_rate = michaelis_menten(substrate_range, Vmax, Km)
 print(Km)
 print(Vmax)
-plt.plot(substrate_concentration, reaction_rate,
-         'bo', label='Experimental data')
+# plt.plot(substrate_concentration, reaction_rate,
+#  'bo', label='Experimental data')
 plt.plot(substrate_range, fitted_reaction_rate,
          'r-', label='Fitted curve')
 plt.grid()
