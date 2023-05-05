@@ -46,7 +46,7 @@ begin actions
 #   resetConcentrations({EGFR=>EGFR_high})
 #   resetConcentrations({EGF=>EGF_low})
   simulate_ode({t_end=>200,n_steps=>100,atol=>1e-8,rtol=>1e-6})
-  plot({title=>"EGFR Dimer Growth",xtitle=>"Time",ytitle=>"Concentration",file=>"EGFR_dimer_growth.pdf",legend_entries=>["EGFR monomer", "EGF", "EGFR dimer"]})
+  # plot({title=>"EGFR Dimer Growth",xtitle=>"Time",ytitle=>"Concentration",file=>"EGFR_dimer_growth.pdf",legend_entries=>["EGFR monomer", "EGF", "EGFR dimer"]})
 #   writeSimulationData({file=>"EGFR_dimer_growth.txt", format=>"CSV"})
     # writeSBML()
 end actions
