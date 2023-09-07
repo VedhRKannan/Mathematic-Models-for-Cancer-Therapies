@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # read the TSV file
-filename = "new.tsv"
+filename = "angles.tsv"
 with open(filename, 'r') as f:
     lines = f.readlines()
 

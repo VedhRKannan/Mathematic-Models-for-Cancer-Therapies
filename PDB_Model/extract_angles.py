@@ -2,7 +2,6 @@ import Bio.PDB
 import matplotlib.pyplot as plt
 import numpy as np
 import Bio.PDB
-
 import math
 
 
