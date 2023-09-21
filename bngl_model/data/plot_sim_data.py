@@ -34,7 +34,7 @@ ax.set_yscale('log', base=10)
 ax.set_xscale('log', base=10)
 plt.xlabel("Time")
 plt.ylabel("Concentration")
-plt.title("EGFR Dimer Growth (normal)")
+plt.title("EGFR Dimer Growth")
 plt.legend()
 
 # plt.savefig("EGFR_dimer_growth_python.png")
