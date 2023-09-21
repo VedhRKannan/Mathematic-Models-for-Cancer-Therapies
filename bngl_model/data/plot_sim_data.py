@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-cdat_file = "bngl_model_data/egfr_growth_normal.cdat"
+cdat_file = "bngl_model/data/egfr_growth_normal.cdat"
+# cdat_file = "bngl_model/data/egfr_growth_overexpressed.cdat"
 
 
 with open(cdat_file, "r") as f:
@@ -36,5 +37,5 @@ plt.ylabel("Concentration")
 plt.title("EGFR Dimer Growth (normal)")
 plt.legend()
 
-plt.savefig("EGFR_dimer_growth_python.png")
-# plt.show()
+# plt.savefig("EGFR_dimer_growth_python.png")
+plt.show()
