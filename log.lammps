@@ -1,0 +1,17 @@
+LAMMPS (2 Aug 2023 - Update 1)
+dimension 3
+boundary p p p
+read_data <<< EOF
+
+2 atoms
+1 0.0 0.0 0.0
+2 1.0 0.0 0.0
+EOF
+ERROR: Unknown read_data keyword EOF (src/src/read_data.cpp:330)
+Last command: read_data <<< EOF
+
+2 atoms
+1 0.0 0.0 0.0
+2 1.0 0.0 0.0
+EOF
+Total wall time: 0:00:00
