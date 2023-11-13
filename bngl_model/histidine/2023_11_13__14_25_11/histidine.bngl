@@ -1,8 +1,8 @@
 begin model
 
 begin parameters
-  k1 0.1  # Rate constant for reaction between Histidine and Phosphate
-  k2 100  # Rate constant for reaction between Tyrosine and Phosphate
+  k1 0.9  # Rate constant for reaction between Histidine and Phosphate
+  k2 1.0  # Rate constant for reaction between Tyrosine and Phosphate
 #   k3 1.0  # Rate constant for de-phosphorylation of Phosphohistidine
 #   k4 1.0  # Rate constant for de-phosphorylation of Phosphotyrosine
 end parameters
