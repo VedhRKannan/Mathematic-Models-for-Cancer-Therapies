@@ -1,0 +1,35 @@
+begin model
+
+begin parameters
+  k1 0.1  # Rate constant for reaction between Histidine and Phosphate
+  k2 0.5  # Rate constant for reaction between Tyrosine and Phosphate
+#   k3 1.0  # Rate constant for de-phosphorylation of Phosphohistidine
+#   k4 1.0  # Rate constant for de-phosphorylation of Phosphotyrosine
+end parameters
+
+begin molecule types
+  Histidine()
+  Tyrosine()
+  Phosphate()
+  Phosphohistidine()
+  Phosphotyrosine()
+end molecule types
+
+begin seed species
+  Histidine() 0
+  Tyrosine() 90
+  Phosphate() 100
+  Phosphohistidine() 0
+  Phosphotyrosine() 0
+end seed species
+
+begin reaction rules
+  Histidine() + Phosphate() -> Phosphohistidine() k1
+  Tyrosine() + Phosphate() -> Phosphotyrosine() k2
+end reaction rules
+
+end model
+
+generate_network({overwrite=>1})
+
+simulate_ode({t_end=>1000, n_steps=>50000, output=>'cdat'})
