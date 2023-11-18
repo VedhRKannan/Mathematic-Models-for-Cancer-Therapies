@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-cdat_file = "bngl_model/data/egfr_growth_normal.cdat"
+cdat_file = "bngl_model/histidine/2023_11_13__14_53_52/histidine.cdat"
 # cdat_file = "bngl_model/data/egfr_growth_overexpressed.cdat"
 
 
@@ -18,18 +18,22 @@ for line in lines:
 data = np.array(data)
 
 time = data[:, 0]
-EGFR_monomer = data[:, 4]
-EGF = data[:, 1]
-EGFR_dimer = data[:, 7]
+Tyrosine = data[:, 2]
+Histidine = data[:, 1]
+Phosphate = data[:, 3]
+Phosphohistidine = data[:, 4]
+Phosphotyrosine = data[:, 5]
 
 # print(EGFR_dimer)
-print(time)
+print(Histidine)
 # print(EGF)
 # print(EGFR_monomer)
 fig, ax = plt.subplots()
-ax.plot(time, EGFR_monomer, label="EGFR monomer")
-ax.plot(time, EGF, label="EGF")
-ax.plot(time, EGFR_dimer, label="EGFR dimer")
+ax.plot(time, Tyrosine, label="Tyrosine")
+ax.plot(time, Histidine, label="Histidine")
+ax.plot(time, Phosphate, label="Phosphate")
+ax.plot(time, Phosphohistidine, label="Phosphohistidine")
+ax.plot(time, Phosphotyrosine, label="Phosphotyrosine")
 ax.set_yscale('log', base=10)
 ax.set_xscale('log', base=10)
 plt.xlabel("Time")
