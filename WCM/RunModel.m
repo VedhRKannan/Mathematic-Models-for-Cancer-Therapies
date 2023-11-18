@@ -5,13 +5,14 @@ function [tout_all,xoutG_all,xoutS_all]=RunModel(flagD,th,STIM,xoutS,xoutG,dataS
 % Required Inputs:
 % flagD: 1 for deterministic simulations, 0 for stochastic simulations.
 % th: simulation time (hours)
-% STIM: stimulus vector
-
-% Outputs:
+% STIM: stimulus vector1% Outputs:
 % tout_all: n-by-1 vector of time values (seconds)
 % xoutG_all: n-by-g matrix of species (g) through time (n) (g indices lines up to gm tab in Names.xls sheet) 
 % xoutS_all: n-by-p matrix of speices (p) through time (n) (p indices lines up to PARCDL tab in Names.xls sheet) 
 
+% Example Input:
+% This will run the model deterministically for 20 hours with no stimulus.
+function [tout_all,xoutG_all,xoutS_all]=RunModel(1,20,zeros(775,1),[],[],[],[]);
 
 %% PREP
 if isempty(dataS)
@@ -93,9 +94,6 @@ optionscvodes = CVodeSetOptions('UserData', dataS,...
                           'JacobianFn',@Jeval774);                      
 CVodeInit(@createODEs, 'BDF', 'Newton', t0, xoutS', optionscvodes);
 
-%ODE15s options
-%optionsode15s=odeset('RelTol',1e-3,'Jacobian',@Jeval774ode15s);
-
 tout_all=zeros(N_STEPS+1,1);
 xoutG_all=zeros(N_STEPS+1,length(xoutG));
 xoutS_all=zeros(N_STEPS+1,length(xoutS));
@@ -129,14 +127,7 @@ for i=1:N_STEPS
         xoutS_all=xoutS_all(1:i+1,:);
         return
     end
-    
-%     %ODE15s
-%     [tout,xoutS]=ode15s(@createODEs,[ts_up-ts ts_up],xoutS_all(i,:),optionsode15s,dataS);
-%     tout_all(i+1)=tout(end);
-%     xoutG_all(i+1,:)=xoutG';
-%     xoutS_all(i+1,:)=xoutS(end,:);    
 
-    
     ts_up=ts_up+ts;
     
     if rem(i,1000)==0; disp(strcat(num2str(i),'...')); end

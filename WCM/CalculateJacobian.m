@@ -86,36 +86,36 @@ fprintf(FID,formatSpec);
 %print x1=x(1) type values
 disp('... Writing x1=x(1) type values')
 formatSpec = 'x%i=x(%i);\n';
-for i=1:size(J,1);
+for i=1:size(J,1)
     fprintf(FID,formatSpec,[i,i]);
 end
 
 %print k1=k(1) type values
 disp('... Writing k1=k(1) type values')
 formatSpec = 'k%i=k(%i);\n';
-for i=1:length(data.kS);
+for i=1:length(data.kS)
     fprintf(FID,formatSpec,[i,i]);
 end
 
 %adding
 disp('... Writing Vv1=Vv(1) type values')
 formatSpec = 'Vv%i=Vv(%i);\n';
-for i=1:length(data.VvPARCDL);
+for i=1:length(data.VvPARCDL)
     fprintf(FID,formatSpec,[i,i]);
 end
 disp('... Writing Vx1=Vx(1) type values')
 formatSpec = 'Vx%i=Vx(%i);\n';
-for i=1:length(data.VxPARCDL);
+for i=1:length(data.VxPARCDL)
     fprintf(FID,formatSpec,[i,i]);
 end
 disp('... Writing mExp1=mExp(1) type values')
 formatSpec = 'mExp%i=mExp(%i);\n';
-for i=1:length(data.mExp_nM);
+for i=1:length(data.mExp_nM)
     fprintf(FID,formatSpec,[i,i]);
 end
 disp('... Writing mMod1=mMod(1) type values')
 formatSpec = 'mMod%i=mMod(%i);\n';
-for i=1:length(data.mMod);
+for i=1:length(data.mMod)
     fprintf(FID,formatSpec,[i,i]);
 end
 %done adding
@@ -126,7 +126,7 @@ disp('... Writing Jacobian Equations')
 FID = fopen(strcat(filename,'.m'),'a');
 formatSpec = 'Je(%i,%i)=%s;\n';
 
-for i=1:length(SPr);
+for i=1:length(SPr)
     str=char(J(SPr(i),SPc(i)));
     fprintf(FID,formatSpec,[SPr(i),SPc(i),str]);
     %disp(i/length(SPr))

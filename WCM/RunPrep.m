@@ -4,22 +4,22 @@ function [dataS,dataG]=RunPrep
 % run the model.
 
 %% GET DATA 
-datasheet_gp='master_MCF10A.xlsx'; %general parameters
-datasheet_in='master_MCF10A.xlsx'; %genetic inputs (initial gene, mRNA, and protein levels)
-%datasheet_in='master_u87.xlsx'; ind_u87=1; %uncomment to use u87 data
+datasheet_gp='params.xlsx'; %general parameters
+datasheet_in='gene_MCF10A.xlsx'; %genetic inputs (initial gene, mRNA, and protein levels)
+%datasheet_in='gene_u87.xlsx'; ind_u87=1; %uncomment to use u87 data
 
 %% Model Essentials
 ts=30; %Timestep for simulations;
 % General params
 datasheet=datasheet_gp;
-[cellparams,~,~]=xlsread(datasheet,'cellparams','','basic');
+[cellparams,~,~]=xlsread(datasheet,'cellparams');
 VolumeofCell=cellparams(1);
 [Vn,Vc,Vm,mpc2nmcf_Vc,mpc2nmcf_Vm,mpc2nmcf_Vn]=CalcVolumeParams(VolumeofCell);
 Ve=cellparams(3);
 mT0=cellparams(9)*mpc2nmcf_Vc;
 PIP2_0=cellparams(10);
 M0=cellparams(11);
-[tlparams,~,~]=xlsread(datasheet,'tlparams','','basic');
+[tlparams,~,~]=xlsread(datasheet,'tlparams');
 Rt=tlparams(1);
 kbRi=tlparams(2);
 kdR0=tlparams(3);
@@ -31,7 +31,7 @@ kT2=tlparams(7);
 kT3=tlparams(8);
 kT4=tlparams(9);
 k50E=tlparams(10);
-[gene,~,~]=xlsread(datasheet,'gene','','basic');
+[gene,~,~]=xlsread(datasheet,'gene');
 kTCd=gene(:,12);
 kTLd=gene(:,13);
 kTLnat=gene(:,16);
@@ -41,9 +41,9 @@ kTLnat(10:12)=kTLnat(10:12)*5;
 
 %Inputs
 datasheet=datasheet_in;
-[gene,~,~]=xlsread(datasheet,'gene','','basic');
+[gene,~,~]=xlsread(datasheet);
 gExp_mpc=gene(:,1); %gene copy numbers experimental (molecules/cell)
-mExp_mpc=gene(:,4); %mRNA expression experimental (molecules/cell)
+mExp_mpc=gene(:,2); %mRNA expression experimental (molecules/cell)
 mExp_nM=mExp_mpc*mpc2nmcf_Vc;
 
 

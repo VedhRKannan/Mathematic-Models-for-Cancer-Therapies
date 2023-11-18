@@ -1132,18 +1132,18 @@ Run_SimCells(STIM,th,filename)
 % ind_u87=1;" in the first section of the RunPrep.m file. Also, beware, running
 % RunInitialize (below) will overwrite all files in initialized/ (all files associated with MCF10A cells). 
 
-% u87 sims
-[dataS,dataG]=RunPrep;
-dataG.tck50as(98,6)=dataG.tck50as(98,6)*2; %CHANGED FROM MCF10A (change doesn't change results, simply allows initialization to proceed)
-dataG.tck50as(98,5)=dataG.tck50as(98,5)*2; %CHANGED FROM MCF10A (change doesn't change results, simply allows initialization to proceed)
+% % u87 sims
+% [dataS,dataG]=RunPrep;
+% dataG.tck50as(98,6)=dataG.tck50as(98,6)*2; %CHANGED FROM MCF10A (change doesn't change results, simply allows initialization to proceed)
+% dataG.tck50as(98,5)=dataG.tck50as(98,5)*2; %CHANGED FROM MCF10A (change doesn't change results, simply allows initialization to proceed)
+% 
+% mods=[1,1,1,1,1,1,1,1];
+% RunInitialize(mods,dataS,dataG); % Be aware: This will overwrite files in /initialized
 
-mods=[1,1,1,1,1,1,1,1];
-RunInitialize(mods,dataS,dataG); % Be aware: This will overwrite files in /initialized
 
-
-% Create Random population of cells (if needed)
-RunRandomPopCells(50,[matpath,'RandomPopCells.mat'])
-NumSpecies=775;
+% % Create Random population of cells (if needed)
+% RunRandomPopCells(25,[matpath,'RandomPopCells.mat'])
+% NumSpecies=775;
 
 % Effect of inhibitors and GFs, TRAIL dose response in SS state.
 m=1; %NO STIM
@@ -1151,34 +1151,34 @@ STIM=zeros(NumSpecies,1);
 STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
 STIM(769)=0; %MEKi
 STIM(771)=0; %AKTi
-th=80;
+th=48;
 filename=strcat('Apoptosis2S_u87_',num2str(m));
 Run_SimCells(STIM,th,filename)
 
-m=2; %MEKi
-STIM=zeros(NumSpecies,1);
-STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
-STIM(769)=10000; %MEKi
-STIM(771)=0; %AKTi
-th=80;
-filename=strcat('Apoptosis2S_u87_',num2str(m));
-Run_SimCells(STIM,th,filename)
-
-m=3; %AKTi
-STIM=zeros(NumSpecies,1);
-STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
-STIM(769)=0; %MEKi
-STIM(771)=10000; %AKTi
-th=80;
-filename=strcat('Apoptosis2S_u87_',num2str(m));
-Run_SimCells(STIM,th,filename)
-
-m=4; %MEKi+AKTi
-STIM=zeros(NumSpecies,1);
-STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
-STIM(769)=10000; %MEKi
-STIM(771)=10000; %AKTi
-th=80;
-filename=strcat('Apoptosis2S_u87_',num2str(m));
-Run_SimCells(STIM,th,filename)
+% m=2; %MEKi
+% STIM=zeros(NumSpecies,1);
+% STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
+% STIM(769)=10000; %MEKi
+% STIM(771)=0; %AKTi
+% th=48;
+% filename=strcat('Apoptosis2S_u87_',num2str(m));
+% Run_SimCells(STIM,th,filename)
+% 
+% m=3; %AKTi
+% STIM=zeros(NumSpecies,1);
+% STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
+% STIM(769)=0; %MEKi
+% STIM(771)=10000; %AKTi
+% th=48;
+% filename=strcat('Apoptosis2S_u87_',num2str(m));
+% Run_SimCells(STIM,th,filename)
+% 
+% m=4; %MEKi+AKTi
+% STIM=zeros(NumSpecies,1);
+% STIM(156:162)=[0,0,0,0,0,0,0]; %ligs
+% STIM(769)=10000; %MEKi
+% STIM(771)=10000; %AKTi
+% th=48;
+% filename=strcat('Apoptosis2S_u87_',num2str(m));
+% Run_SimCells(STIM,th,filename)
 

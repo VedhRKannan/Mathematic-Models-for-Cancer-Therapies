@@ -697,6 +697,7 @@ end
 %Get data
 St=load(strcat(matpath,'Phos_Receptor_Dynamics.mat')); 
 xoutS_all=St.xoutS_all;
+tout_all=St.tout_all;
 
 %Plot
 inds_Rint=[291:352,382:410,498:526];
