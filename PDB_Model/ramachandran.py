@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # read the TSV file
-filename = "angles.tsv"
+filename = "Alphafold/prediction_biopython.tsv"
 with open(filename, 'r') as f:
     lines = f.readlines()
 
@@ -29,5 +29,6 @@ plt.grid()
 # Plot data
 plt.scatter(phi_list, psi_list, s=10, c="black")
 
+plt.title("Ramachandran Plot for eCIS")
 # Show plot
 plt.show()

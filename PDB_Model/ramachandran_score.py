@@ -64,7 +64,7 @@ def calculate_rpq(file_name):
 
 
 if __name__ == "__main__":
-    file_name = "PDB_Model/angles.tsv"
+    file_name = "Alphafold/prediction_biopython.tsv"
     rpq, allowed, favored, disallowed = calculate_rpq(file_name)
 
     print(f"RPQ: {rpq:.2f}%")

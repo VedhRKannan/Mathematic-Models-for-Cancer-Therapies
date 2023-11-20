@@ -42,10 +42,11 @@ def ramachandran_type(residue, next_residue):
         return "General"
 
 
-pdb_code = "1nql"
+pdb_code = "Alphafold/prediction"
 
 print("Loading Structure...")
 structure = Bio.PDB.PDBParser().get_structure(pdb_code, "%s.pdb" % pdb_code)
+
 print("Done")
 
 print("Saving Angles to file...")
