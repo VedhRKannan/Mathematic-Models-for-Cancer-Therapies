@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-cdat_file = "bngl_model/histidine/2023_11_13__14_53_52/histidine.cdat"
+cdat_file = "bngl_modelling/histidine/2023_11_13__14_53_52/histidine.cdat"
 # cdat_file = "bngl_model/data/egfr_growth_overexpressed.cdat"
 
 

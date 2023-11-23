@@ -1,0 +1,13 @@
+# Created by BioNetGen 2.8.5
+begin parameters
+    1 k1  0.1  # Constant
+    2 k2  0.5  # Constant
+end parameters
+begin species
+    1 Tyrosine() 90
+    2 Phosphate() 100
+    3 Phosphotyrosine() 0
+end species
+begin reactions
+    1 1,2 3 k2 #_R1
+end reactions
